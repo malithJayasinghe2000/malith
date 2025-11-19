@@ -66,7 +66,7 @@ export default function Portfolio() {
     },
     {
       title: "Stores Management System",
-      description: "Collaborated on the development of a comprehensive system to manage procurement, tenders, employees, and equipment across the country. The system streamlined operations by centralizing data, improving transparency, and ensuring efficient resource management for the department.",
+      description: "Collaborated on the development of a comprehensive system for Survey department of Sri Lanka to manage procurement, tenders, employees, and equipment across the country. The system streamlined operations by centralizing data, improving transparency, and ensuring efficient resource management for the department.",
       tags: ["Laravel", "Filament", "MySQL", "Bootstrap"],
       link: "#",
       image: "/images/stores.jpg"
