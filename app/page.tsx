@@ -45,7 +45,7 @@ export default function Portfolio() {
       title: "Intern Software Engineer",
       company: "One Billion Technology",
       description: "Working on microservices-based application using Spring Boot and React.js, improving system scalability and maintainability",
-      tags: ["Spring Boot", "React", "MongoDB", "AWS","Microservices", "Bitbucket", "Jira", "Postman"]
+      tags: ["Spring Boot", "React", "Redux", "MongoDB", "AWS","Microservices", "Bitbucket", "Jira", "Postman"]
     },
     {
       period: "2024 Feb — 2024 Oct",
