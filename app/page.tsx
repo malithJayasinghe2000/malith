@@ -279,7 +279,7 @@ export default function Portfolio() {
               {/* View Full Resume Button */}
               <div className="mt-12">
                 <a 
-                  href="/resume.pdf" 
+                  href="/malith-jayasinghe-cv.pdf" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-teal-300 focus-visible:text-teal-300 font-semibold text-slate-200 group/link text-base"
