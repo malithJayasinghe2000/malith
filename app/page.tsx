@@ -42,14 +42,14 @@ export default function Portfolio() {
   const experiences = [
     {
       period: "2025 Apr — Present",
-      title: "Intern Software Engineer",
+      title: "",
       company: "One Billion Technology",
       description: "Working on microservices-based application using Spring Boot and React.js, improving system scalability and maintainability",
       tags: ["Spring Boot", "React", "Redux", "MongoDB", "AWS","Microservices", "Bitbucket", "Jira", "Postman"]
     },
     {
       period: "2024 Feb — 2024 Oct",
-      title: "Intern Software Engineer",
+      title: "",
       company: "Softmint Software Solutions",
       description: "Optimized SQL queries and improved database performance. Specialized in creating scalable and secure backend services using Laravel, focusing on database management and API integration.",
       tags: ["Laravel", "React", "MySql", "WordPress", "Node.js", "Github", "Digital Ocean", "CPanel"]
