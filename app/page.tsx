@@ -92,13 +92,13 @@ export default function Portfolio() {
       link: "#",
       image: "/images/tour.jpg"
     },
-    {
-      title: "Weather Forecast Web Application",
-      description: "A web application with provides current weather in a city and 7-day daily forecasting. It fetches real-time data from a weather API and displays it in a user-friendly interface, allowing users to plan their activities based on accurate weather information.",
-      tags: ["React", "Open Weather API"],
-      link: "https://github.com/malithJayasinghe2000/Weather-Forecast-web-Application",
-      image: "/images/weather.png"
-    }
+    // {
+    //   title: "Weather Forecast Web Application",
+    //   description: "A web application with provides current weather in a city and 7-day daily forecasting. It fetches real-time data from a weather API and displays it in a user-friendly interface, allowing users to plan their activities based on accurate weather information.",
+    //   tags: ["React", "Open Weather API"],
+    //   link: "https://github.com/malithJayasinghe2000/Weather-Forecast-web-Application",
+    //   image: "/images/weather.png"
+    // }
   ];
 
   return (
@@ -209,24 +209,22 @@ export default function Portfolio() {
               </div>
               <div>
                 <p className="mb-4">
-                  As a recent graduate from SLIIT and a passionate Software Engineer,
+                  I’m a Software Engineer and SLIIT graduate with over two years of experience across professional roles and a variety of independent freelance projects. 
+                  I specialize in building full-stack applications using  Spring Boot, Node, Laravel, React, Next.js and AWS. focusing on creating tools that are actually useful and easy to use.
                 </p>
                 <p className="mb-4">
-                  My technical expertise is diverse, allowing me to adapt to different project needs. On the front-end, 
-                  I specialize in creating dynamic and responsive user interfaces using React.js and Next.js. 
-                  For the back-end, I have hands-on experience building robust APIs and server-side logic with Spring Boot, Node.js, and Laravel. I also have familiarity with cloud deployment and services using AWS.
-                </p>
-                <p className="mb-4">
-                  Beyond my core web development skills, 
-                  I am deeply enthusiastic about the fields of Artificial Intelligence and Machine Learning. 
-                  I am actively expanding my knowledge in Deep Learning models and data-driven solutions, 
-                  and I am eager to apply these skills to build more intelligent and predictive applications.
+                  I’m a big believer in working efficiently, so I lean heavily on AI-assisted development tools to speed up my coding, debug complex issues, and stay productive. 
+                  Beyond just using AI to write code, I’m also building my own intelligent applications using RAG and LLMs to solve real-world problems.
                 </p>
                 <p>
+                  I’m a straightforward problem-solver who enjoys the challenge of building something from scratch.
+                  I’m currently looking for a role where I can use my full-stack background while continuing to grow my interest in the AI space.
+                </p>
+                {/* <p>
                   I am a dedicated problem-solver and a quick learner, 
                   always looking for opportunities to tackle complex challenges and contribute to innovative projects. 
                   I'm currently seeking a role where I can leverage my full-stack capabilities while growing my passion for AI/ML.
-                </p>
+                </p> */}
               </div>
             </section>
 
