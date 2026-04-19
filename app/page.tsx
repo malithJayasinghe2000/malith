@@ -59,10 +59,17 @@ export default function Portfolio() {
   const projects = [
     {
       title: "Coworking Space Booking web app (Millionspaces)",
-      description: "Contributed to the development of a web application for booking coworking spaces in Sri Lanka. Users can browse, book, and manage coworking space reservations with real-time availability and secure payments.",
+      description: "Contributed to the development of a system for booking coworking spaces in Sri Lanka. Users can browse, book, and manage coworking space reservations with real-time availability and secure payments.",
       tags: ["React", "Spring Boot", "MongoDB", "AWS"],
       link: "https://millionspaces.com/Sri-Lanka",
       image: "/images/millionspaces.png"
+    },
+    {
+      title: "SustainPro - Event management Platform",
+      description: "Contribute to develop a comprehensive enterprise system featuring a hierarchical structure for managing Organizations, Events, and nested Services. Engineered a real-time monitoring engine using AWS IoT Core to detect device anomalies and automatically notify technicians, while implementing complex Role-Based Access Control (RBAC) to secure multi-level user permissions. Designed the end-to-end event lifecycle controller and an automated provisioning pipeline for seamless IoT device onboarding and telemetry visualization.",
+      tags: ["IoT", "NextJs", "PostgreSQL", "AWS", "RabbitMQ", "Docker"],
+      link: "#",
+      // image: "/images/millionspaces.png"
     },
     {
       title: "Stores Management System",
