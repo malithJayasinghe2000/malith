@@ -69,7 +69,7 @@ export default function Portfolio() {
       description: "Contribute to develop a comprehensive enterprise system featuring a hierarchical structure for managing Organizations, Events, and nested Services. Engineered a real-time monitoring engine using AWS IoT Core to detect device anomalies and automatically notify technicians, while implementing complex Role-Based Access Control (RBAC) to secure multi-level user permissions. Designed the end-to-end event lifecycle controller and an automated provisioning pipeline for seamless IoT device onboarding and telemetry visualization.",
       tags: ["IoT", "NextJs", "PostgreSQL", "AWS", "RabbitMQ", "Docker"],
       link: "#",
-      // image: "/images/millionspaces.png"
+      image: "https://cdni.iconscout.com/illustration/premium/thumb/event-management-illustration-svg-download-png-4620528.png"
     },
     {
       title: "Stores Management System",
