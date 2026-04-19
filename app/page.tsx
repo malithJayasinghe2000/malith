@@ -277,7 +277,7 @@ export default function Portfolio() {
               </div>
 
               {/* View Full Resume Button */}
-              <div className="mt-12">
+              {/* <div className="mt-12">
                 <a 
                   href="/malith-jayasinghe-cv.pdf" 
                   target="_blank"
@@ -296,7 +296,7 @@ export default function Portfolio() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7V17" />
                   </svg>
                 </a>
-              </div>
+              </div> */}
             </section>
 
             {/* Projects Section */}
