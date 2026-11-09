@@ -2,36 +2,202 @@
 
 import React, { useState, useEffect } from 'react';
 
+type Project = {
+  title: string;
+  description: string;
+  tags: string[];
+  link?: string;
+  badge?: "Live" | "GitHub";
+  image: string;
+};
+
+const SECTIONS = ['about', 'experience', 'projects', 'contact'] as const;
+
+const experiences = [
+  {
+    period: "2026 Jun — Present",
+    title: "Junior AI Automation Engineer",
+    company: "Aahaas",
+    description: "Built Travel Quote GPT, an AI-powered travel quotation and itinerary generator that automates quote preparation. Develop and integrate backend APIs across multiple systems with data synchronization, validation and prompt-injection safeguards, and optimize database queries and LLM token usage to cut AI processing costs.",
+    tags: ["n8n", "JavaScript", "OpenAI", "Gemini", "REST APIs", "LLM Automation"]
+  },
+  {
+    period: "2025 May — 2026 May",
+    title: "Intern Software Engineer",
+    company: "One Billion Tech",
+    description: "Built Spring Boot microservices and React interfaces for Million Spaces, a workspace booking platform: added server-side caching, improved Google Calendar sync, helped migrate services to AWS serverless, and co-developed Spacey, an AI chatbot for users. Also built full-stack features for 1HR, a cloud-native HR system, working on multi-cloud infrastructure with Terraform.",
+    tags: ["Spring Boot", "Microservices", "Node.js", "React", "MongoDB", "PostgreSQL", "AWS", "Azure", "Terraform", "Serverless"]
+  },
+  {
+    period: "2024 Feb — 2024 Oct",
+    title: "Intern Software Engineer",
+    company: "Softmint Software Solutions",
+    description: "Optimized SQL queries and improved database performance. Built scalable, secure backend services with Laravel, focusing on database management and API integration.",
+    tags: ["Laravel", "React", "MySQL", "WordPress", "Node.js", "DigitalOcean"]
+  }
+];
+
+const featuredProjects: Project[] = [
+  {
+    title: "AI Agent System for E-commerce",
+    description: "A multi-agent AI platform for e-commerce with customer support, shopping assistance and dynamic agent routing. Includes an MCP server giving external AI assistants secure, customer-scoped catalogue access, RAG product search on cloud or local models, prompt-injection protection with human handover, and a practice mode where shop owners grade AI replies before going live.",
+    tags: ["Python", "LangGraph", "FastAPI", "MCP", "PostgreSQL", "pgvector", "Redis", "Gemini", "Ollama", "Next.js"],
+    link: "https://github.com/malithJayasinghe2000/neura-agents-system",
+    badge: "GitHub",
+    image: "https://opengraph.githubassets.com/1/malithJayasinghe2000/neura-agents-system"
+  },
+  {
+    title: "TheLawyr - Sri Lankan Legal Information Platform",
+    description: "A platform that helps people explore and understand Sri Lankan legislation. Its AI legal assistant retrieves the relevant law and answers with source references. Also includes a legal library, law firm directory, blog and legal forms.",
+    tags: ["Next.js", "Python", "RAG", "LangChain", "Gemini"],
+    link: "https://thelawyr.fiveneurals.com",
+    badge: "Live",
+    image: "/images/thelawyr.png"
+  },
+  {
+    title: "JobCeylon - AI Powered Job Platform",
+    description: "A live job platform that aggregates Sri Lankan job listings, matches them to users and sends Telegram and email alerts. Implemented subscription tier limits and pricing logic, fixed the PayPal payment flow, and improved UX with job filters, a simpler application flow and mobile-responsive layouts.",
+    tags: ["Next.js", "TypeScript", "Supabase", "GitHub Actions", "Vercel"],
+    link: "https://jobceylon.com/",
+    badge: "Live",
+    image: "/images/jobceylon.png"
+  }
+];
+
+const otherProjects: Project[] = [
+  {
+    title: "Millionspaces - Coworking Space Booking",
+    description: "Contributed to a platform for booking coworking spaces in Sri Lanka, with real-time availability and secure payments. Implemented server-side caching, improved Google Calendar booking sync, and co-developed Spacey, an AI chatbot that assists users.",
+    tags: ["React", "Spring Boot", "MongoDB", "AWS"],
+    link: "https://millionspaces.com/Sri-Lanka",
+    badge: "Live",
+    image: "/images/millionspaces.png"
+  },
+  {
+    title: "SustainPro - Event Management Platform",
+    description: "Contributed to an enterprise system for managing organizations, events and nested services. Built a real-time monitoring engine on AWS IoT Core that detects device anomalies and notifies technicians automatically, and implemented role-based access control (RBAC) for multi-level user permissions. Designed the end-to-end event lifecycle and an automated pipeline for IoT device onboarding and telemetry visualization.",
+    tags: ["IoT", "Next.js", "PostgreSQL", "AWS", "RabbitMQ", "Docker"],
+    link: "https://github.com/malithJayasinghe2000/sustainpro",
+    badge: "GitHub",
+    image: "https://opengraph.githubassets.com/1/malithJayasinghe2000/sustainpro"
+  },
+  {
+    title: "Blockchain-based E-voting System",
+    description: "Final-year research on secure voting and data integrity, using homomorphic encryption for encrypted vote tabulation and blockchain to verify vote integrity.",
+    tags: ["Next.js", "Ethereum", "Solidity", "Homomorphic Encryption"],
+    link: "https://github.com/malithJayasinghe2000/E-voting-research-project",
+    badge: "GitHub",
+    image: "https://opengraph.githubassets.com/1/malithJayasinghe2000/E-voting-research-project"
+  },
+  {
+    title: "Stores Management System",
+    description: "Collaborated on a system for the Survey Department of Sri Lanka to manage procurement, tenders, employees and equipment across the country, centralizing data and improving transparency.",
+    tags: ["Laravel", "Filament", "MySQL", "Bootstrap"],
+    image: "/images/stores.jpg"
+  },
+  {
+    title: "Tour Management System",
+    description: "Contributed to a centralized admin panel for managing hotel, activity and tour bookings, integrated with an existing WordPress database so booking records stay in sync.",
+    tags: ["WordPress", "Laravel", "JavaScript", "MySQL", "DigitalOcean"],
+    image: "/images/tour.jpg"
+  }
+];
+
+function ArrowIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg className={`h-4 w-4 shrink-0 transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7V17" />
+    </svg>
+  );
+}
+
+function Tags({ tags }: { tags: string[] }) {
+  return (
+    <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Technologies used">
+      {tags.map((tag) => (
+        <li key={tag} className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium leading-5 text-accent">
+          {tag}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function SectionLabel({ id, label }: { id: string; label: string }) {
+  return (
+    <div className="sticky top-0 z-20 -mx-6 mb-6 w-screen bg-ink/80 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:relative lg:top-auto lg:mx-0 lg:w-full lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-none">
+      <h2 id={`${id}-heading`} className="text-sm font-bold uppercase tracking-widest text-fg lg:sr-only">{label}</h2>
+    </div>
+  );
+}
+
+function ProjectCard({ project }: { project: Project }) {
+  return (
+    <li className="mb-12">
+      <div className="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:group-hover/list:opacity-50 lg:hover:opacity-100!">
+        <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-lg transition lg:-inset-x-6 lg:block lg:group-hover:bg-surface"></div>
+        <div className="z-10 sm:order-1 sm:col-span-2">
+          <img
+            src={project.image}
+            alt=""
+            loading="lazy"
+            className="aspect-video w-full rounded border border-line object-cover transition group-hover:border-accent/40 sm:aspect-auto"
+          />
+        </div>
+        <div className="z-10 sm:order-2 sm:col-span-6">
+          <h3 className="font-medium leading-snug text-fg">
+            {project.link ? (
+              <a href={project.link} target="_blank" rel="noopener noreferrer" className="group/link inline-flex items-baseline gap-1 text-base hover:text-accent focus-visible:text-accent">
+                <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+                <span>{project.title}</span>
+                <ArrowIcon className="translate-y-0.5" />
+              </a>
+            ) : (
+              <span className="text-base">{project.title}</span>
+            )}
+          </h3>
+          {project.badge && (
+            <span className={`mt-2 inline-flex items-center gap-1.5 rounded border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
+              project.badge === "Live" ? "border-accent/40 text-accent" : "border-line text-muted"
+            }`}>
+              {project.badge === "Live" && <span className="h-1.5 w-1.5 rounded-full bg-accent"></span>}
+              {project.badge}
+            </span>
+          )}
+          <p className="mt-2 text-sm leading-relaxed">{project.description}</p>
+          <Tags tags={project.tags} />
+        </div>
+      </div>
+    </li>
+  );
+}
+
 export default function Portfolio() {
-  const [activeSection, setActiveSection] = useState('about');
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeSection, setActiveSection] = useState<string>('about');
+  const [mousePosition, setMousePosition] = useState({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['about', 'experience', 'projects'];
-      const scrollPosition = window.scrollY + 200; // offset for better detection
-
-      for (const section of sections) {
+      const scrollPosition = window.scrollY + 200;
+      const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 4;
+      if (atBottom) {
+        setActiveSection('contact');
+        return;
+      }
+      for (const section of SECTIONS) {
         const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetBottom = offsetTop + element.offsetHeight;
-
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(section);
-            break;
-          }
+        if (element && scrollPosition >= element.offsetTop && scrollPosition < element.offsetTop + element.offsetHeight) {
+          setActiveSection(section);
+          break;
         }
       }
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+    const handleMouseMove = (e: MouseEvent) => setMousePosition({ x: e.clientX, y: e.clientY });
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
-    handleScroll(); 
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -39,333 +205,161 @@ export default function Portfolio() {
     };
   }, []);
 
-  const experiences = [
-    {
-      period: "2025 Apr — Present",
-      title: "Intern Software Engineer",
-      company: "One Billion Technology",
-      description: "Working on microservices-based applications using Spring Boot, Node and React.js, improving system scalability and maintainability",
-      tags: ["Spring Boot","Serverless","Node", "React", "Redux", "MongoDB", "AWS","Microservices", "Bitbucket", "Jira", "Postman"]
-    },
-    {
-      period: "2024 Feb — 2024 Oct",
-      title: "Intern Software Engineer",
-      company: "Softmint Software Solutions",
-      description: "Optimized SQL queries and improved database performance. Specialized in creating scalable and secure backend services using Laravel, focusing on database management and API integration.",
-      tags: ["Laravel", "React", "MySql", "WordPress", "Node.js", "Github", "Digital Ocean", "CPanel"]
-    }
-  ];
-
-  const projects = [
-    {
-      title: "Coworking Space Booking web app (Millionspaces)",
-      description: "Contributed to the development of a system for booking coworking spaces in Sri Lanka. Users can browse, book, and manage coworking space reservations with real-time availability and secure payments.",
-      tags: ["React", "Spring Boot", "MongoDB", "AWS"],
-      link: "https://millionspaces.com/Sri-Lanka",
-      image: "/images/millionspaces.png"
-    },
-    {
-      title: "SustainPro - Event management Platform",
-      description: "Contribute to develop a comprehensive enterprise system featuring a hierarchical structure for managing Organizations, Events, and nested Services. Engineered a real-time monitoring engine using AWS IoT Core to detect device anomalies and automatically notify technicians, while implementing complex Role-Based Access Control (RBAC) to secure multi-level user permissions. Designed the end-to-end event lifecycle controller and an automated provisioning pipeline for seamless IoT device onboarding and telemetry visualization.",
-      tags: ["IoT", "NextJs", "PostgreSQL", "AWS", "RabbitMQ", "Docker"],
-      link: "#",
-      image: "https://cdni.iconscout.com/illustration/premium/thumb/event-management-illustration-svg-download-png-4620528.png"
-    },
-    {
-      title: "Stores Management System",
-      description: "Collaborated on the development of a comprehensive system for Survey department of Sri Lanka to manage procurement, tenders, employees, and equipment across the country. The system streamlined operations by centralizing data, improving transparency, and ensuring efficient resource management for the department.",
-      tags: ["Laravel", "Filament", "MySQL", "Bootstrap"],
-      link: "#",
-      image: "/images/stores.jpg"
-    },
-    {
-      title: "Blockchain based e-voting system",
-      description: "My final year research focuses on ensuring secure voting and data integrity using homomorphic encryption for encrypted vote tabulation and blockchain for verifying vote integrity.",
-      tags: ["Next.js", "Ethereum", "Blockchain", "Solidity", "Homomorphic Encryption"],
-      link: "#",
-      image: "/images/voting.gif"
-    },
-    {
-      title: "Lecture notes based Chat bot",
-      description: "This chatbot is designed to answer questions based on lecture notes, making it a useful study companion. Used RAG with LangChain to connect an LLM with a document retrieval system. The bot pulls relevant info from course materials to give accurate answers - pretty handy for studying.",
-      tags: ["RAG", "LangChain", "LLM", "OpenAI"],
-      link: "#",
-      image: "/images/chatbot.jpg"
-    },
-    {
-      title: "Tour management system",
-      description: "Contributed to the development of a centralized admin panel for managing hotel, activity, and tour bookings, resulting in streamlined operations. Integrated the custom admin panel with the existing WordPress Advanced Database Structure, ensuring seamless data synchronization and comprehensive management capabilities for booking records.",
-      tags: ["WordPress", "Laravel", "JavaScript", "MySQL", "Digital Ocean"],
-      link: "#",
-      image: "/images/tour.jpg"
-    },
-    // {
-    //   title: "Weather Forecast Web Application",
-    //   description: "A web application with provides current weather in a city and 7-day daily forecasting. It fetches real-time data from a weather API and displays it in a user-friendly interface, allowing users to plan their activities based on accurate weather information.",
-    //   tags: ["React", "Open Weather API"],
-    //   link: "https://github.com/malithJayasinghe2000/Weather-Forecast-web-Application",
-    //   image: "/images/weather.png"
-    // }
-  ];
-
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-400">
-      {/* Cursor Glow Effect */}
-      <div 
-        className="pointer-events-none fixed inset-0 z-30 transition duration-300"
-        style={{
-          background: `radial-gradient(600px at ${mousePosition.x}px ${mousePosition.y}px, rgba(29, 78, 216, 0.15), transparent 80%)`
-        }}
+    <div className="min-h-screen bg-ink text-muted">
+      {/* Subtle cursor glow */}
+      <div
+        className="pointer-events-none fixed inset-0 z-30 hidden transition duration-300 motion-reduce:hidden lg:block"
+        style={{ background: `radial-gradient(500px at ${mousePosition.x}px ${mousePosition.y}px, rgba(245, 126, 34, 0.05), transparent 80%)` }}
       ></div>
-      
-      <div className="mx-auto max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0">
+
+      <div className="mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0">
         <div className="lg:flex lg:justify-between lg:gap-4">
-          {/* Left Column - Header */}
+          {/* Left column */}
           <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24">
             <div>
-              <h1 className="text-4xl font-bold tracking-tight text-slate-200 sm:text-5xl">
+              <h1 className="text-4xl font-bold tracking-tight text-fg sm:text-5xl">
                 Malith Jayasinghe
               </h1>
-              <h2 className="mt-3 text-lg font-medium tracking-tight text-slate-200 sm:text-xl">
-                Software Engineer
+              <h2 className="mt-3 text-lg font-medium tracking-tight text-fg sm:text-xl">
+                Software Engineer · <span className="text-accent">Backend & AI</span>
               </h2>
               <p className="mt-4 max-w-xs leading-normal">
-                Transforming ideas into seamless digital experience.
+                I build reliable backends and AI-powered systems that solve real problems.
               </p>
-              
-              {/* Navigation */}
-              <nav className="nav hidden lg:block mt-16">
-                <ul className="space-y-4">
-                  <li>
-                    <a href="#about" className="group flex items-center py-3">
-                      <span className={`mr-4 h-px transition-all ${
-                        activeSection === 'about' 
-                          ? 'w-16 bg-slate-200' 
-                          : 'w-8 bg-slate-600 group-hover:w-16 group-hover:bg-slate-200'
-                      }`}></span>
-                      <span className={`text-xs font-bold uppercase tracking-widest transition-colors ${
-                        activeSection === 'about'
-                          ? 'text-slate-200'
-                          : 'text-slate-500 group-hover:text-slate-200'
-                      }`}>
-                        About
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#experience" className="group flex items-center py-3">
-                      <span className={`mr-4 h-px transition-all ${
-                        activeSection === 'experience' 
-                          ? 'w-16 bg-slate-200' 
-                          : 'w-8 bg-slate-600 group-hover:w-16 group-hover:bg-slate-200'
-                      }`}></span>
-                      <span className={`text-xs font-bold uppercase tracking-widest transition-colors ${
-                        activeSection === 'experience'
-                          ? 'text-slate-200'
-                          : 'text-slate-500 group-hover:text-slate-200'
-                      }`}>
-                        Experience
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#projects" className="group flex items-center py-3">
-                      <span className={`mr-4 h-px transition-all ${
-                        activeSection === 'projects' 
-                          ? 'w-16 bg-slate-200' 
-                          : 'w-8 bg-slate-600 group-hover:w-16 group-hover:bg-slate-200'
-                      }`}></span>
-                      <span className={`text-xs font-bold uppercase tracking-widest transition-colors ${
-                        activeSection === 'projects'
-                          ? 'text-slate-200'
-                          : 'text-slate-500 group-hover:text-slate-200'
-                      }`}>
-                        Projects
-                      </span>
-                    </a>
-                  </li>
+              {/* <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-xs text-muted">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent"></span>
+                Currently: AI Automation Engineer @ Aahaas
+              </p> */}
+
+              <nav className="hidden lg:block mt-16" aria-label="In-page navigation">
+                <ul className="w-max space-y-1">
+                  {SECTIONS.map((section) => {
+                    const active = activeSection === section;
+                    return (
+                      <li key={section}>
+                        <a href={`#${section}`} className="group flex items-center py-3">
+                          <span className={`mr-4 h-px transition-all ${active ? 'w-16 bg-accent' : 'w-8 bg-subtle group-hover:w-16 group-hover:bg-fg'}`}></span>
+                          <span className={`text-xs font-bold uppercase tracking-widest transition-colors ${active ? 'text-fg' : 'text-subtle group-hover:text-fg'}`}>
+                            {section}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </nav>
             </div>
 
-            {/* Social Links */}
-            <ul className="ml-1 mt-8 flex items-center space-x-5">
+            <ul className="ml-1 mt-8 flex items-center gap-5" aria-label="Social media">
               <li>
-                <a href="https://github.com/malithJayasinghe2000" className="block hover:text-slate-200">
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <a href="https://github.com/malithJayasinghe2000" target="_blank" rel="noopener noreferrer" className="block hover:text-accent" aria-label="GitHub">
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                   </svg>
                 </a>
               </li>
               <li>
-                <a href="https://www.linkedin.com/in/malithjayasinghe/" className="block hover:text-slate-200">
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                <a href="https://www.linkedin.com/in/malithjayasinghe/" target="_blank" rel="noopener noreferrer" className="block hover:text-accent" aria-label="LinkedIn">
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a href="mailto:malith2jayasinghe@gmail.com" className="block hover:text-accent" aria-label="Email">
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </a>
               </li>
             </ul>
           </header>
 
-          {/* Right Column - Content */}
+          {/* Right column */}
           <main className="pt-24 lg:w-1/2 lg:py-24">
-            {/* About Section */}
-            <section id="about" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-              <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-200 lg:sr-only">About</h2>
-              </div>
-              <div>
-                <p className="mb-4">
-                  I’m a Software Engineer and SLIIT graduate with over two years of experience across professional roles and a variety of independent freelance projects. 
-                  I specialize in building full-stack applications using  Spring Boot, Node, Laravel, React, Next.js and AWS. focusing on creating tools that are actually useful and easy to use.
-                </p>
-                <p className="mb-4">
-                  I’m a big believer in working efficiently, so I lean heavily on AI-assisted development tools to speed up my coding, debug complex issues, and stay productive. 
-                  Beyond just using AI to write code, I’m also building my own intelligent applications using RAG and LLMs to solve real-world problems.
+            <section id="about" aria-labelledby="about-heading" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
+              <SectionLabel id="about" label="About" />
+              <div className="space-y-4 leading-relaxed">
+                <p>
+                  I’m a Software Engineer and SLIIT graduate with two years of experience across industry roles and freelance projects.
+                  I work mostly on the backend: APIs, integrations and cloud services with <span className="text-fg">Spring Boot, Node.js, Python and AWS</span>, plus React and Next.js when a product needs a front end.
                 </p>
                 <p>
-                  I’m a straightforward problem-solver who enjoys the challenge of building something from scratch.
-                  I’m currently looking for a role where I can use my full-stack background while continuing to grow my interest in the AI space.
+                  I’m currently a Junior AI Automation Engineer at <span className="text-fg">Aahaas</span>, where I build and maintain production AI automation systems.
+                  Outside work I build my own AI products, from multi-agent systems with <span className="text-fg">LangGraph and MCP</span> to RAG-based assistants that cite their sources.
                 </p>
-                {/* <p>
-                  I am a dedicated problem-solver and a quick learner, 
-                  always looking for opportunities to tackle complex challenges and contribute to innovative projects. 
-                  I'm currently seeking a role where I can leverage my full-stack capabilities while growing my passion for AI/ML.
-                </p> */}
+                <p>
+                  I use AI-assisted tools like Claude Code and Cursor every day to work faster and keep code quality high.
+                  I care about building software that is reliable, secure and scales.
+                </p>
               </div>
             </section>
 
-            {/* Experience Section */}
-            <section id="experience" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-              <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-200 lg:sr-only">Experience</h2>
-              </div>
-              <div>
-                <ol className="group/list">
-                  {experiences.map((exp, index) => (
-                    <li key={index} className="mb-12">
-                      <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
-                        <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
-                        <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-4">
-                          {exp.period}
-                        </header>
-                        <div className="z-10 sm:col-span-8">
-                          <h3 className="font-medium leading-snug text-slate-200">
-                            <a href="#" className="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-teal-300 focus-visible:text-teal-300 group/link text-base">
-                              <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
-                              <span>{exp.title} · {exp.company}</span>
-                              <svg 
-                                className="ml-1 h-4 w-4 shrink-0 transition-transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                              >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7V17" />
-                              </svg>
-                            </a>
-                          </h3>
-                          <p className="mt-2 text-sm leading-normal">{exp.description}</p>
-                          <ul className="mt-2 flex flex-wrap">
-                            {exp.tags.map((tag, tagIndex) => (
-                              <li key={tagIndex} className="mr-1.5 mt-2">
-                                <div className="flex items-center rounded-full bg-teal-400/10 px-3 py-1 text-xs font-medium leading-5 text-teal-300">
-                                  {tag}
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+            <section id="experience" aria-labelledby="experience-heading" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
+              <SectionLabel id="experience" label="Experience" />
+              <ol className="group/list">
+                {experiences.map((exp) => (
+                  <li key={exp.company} className="mb-12">
+                    <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:group-hover/list:opacity-50 lg:hover:opacity-100!">
+                      <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-lg transition lg:-inset-x-6 lg:block lg:group-hover:bg-surface"></div>
+                      <header className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-subtle sm:col-span-2">
+                        {exp.period}
+                      </header>
+                      <div className="z-10 sm:col-span-6">
+                        <h3 className="text-base font-medium leading-snug text-fg">
+                          {exp.title} · <span className="group-hover:text-accent transition-colors">{exp.company}</span>
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed">{exp.description}</p>
+                        <Tags tags={exp.tags} />
                       </div>
-                    </li>
-                  ))}
-                </ol>
-              </div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
 
-              {/* View Full Resume Button */}
-              {/* <div className="mt-12">
-                <a 
-                  href="/malith-jayasinghe-cv.pdf" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-teal-300 focus-visible:text-teal-300 font-semibold text-slate-200 group/link text-base"
+              <a
+                href="/malith-jayasinghe-cv.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/link inline-flex items-center gap-1 font-semibold text-fg hover:text-accent focus-visible:text-accent"
+              >
+                <span className="border-b border-transparent pb-px transition group-hover/link:border-accent">View Full Resume</span>
+                <ArrowIcon />
+              </a>
+            </section>
+
+            <section id="projects" aria-labelledby="projects-heading" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
+              <SectionLabel id="projects" label="Projects" />
+              <h3 className="mb-8 text-xs font-bold uppercase tracking-widest text-accent">Featured</h3>
+              <ul className="group/list">
+                {featuredProjects.map((p) => <ProjectCard key={p.title} project={p} />)}
+              </ul>
+              <h3 className="mb-8 mt-16 text-xs font-bold uppercase tracking-widest text-subtle">Other work</h3>
+              <ul className="group/list">
+                {otherProjects.map((p) => <ProjectCard key={p.title} project={p} />)}
+              </ul>
+            </section>
+
+            <section id="contact" aria-labelledby="contact-heading" className="mb-16 scroll-mt-16 lg:scroll-mt-24">
+              <SectionLabel id="contact" label="Contact" />
+              <div className="rounded-lg border border-line p-8">
+                <p className="text-2xl font-semibold tracking-tight text-fg">Let’s build something.</p>
+                <p className="mt-3 leading-relaxed">
+                  Have a role, project or idea involving backend systems or AI? I’d be glad to hear about it.
+                </p>
+                <a
+                  href="mailto:malith2jayasinghe@gmail.com"
+                  className="group/link mt-6 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-accent/90"
                 >
-                  <span className="border-b border-transparent pb-px transition group-hover:border-teal-300">
-                    View Full Résumé
-                  </span>
-                  <svg 
-                    className="inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none ml-1 translate-y-px" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
+                  malith2jayasinghe@gmail.com
+                  <ArrowIcon />
                 </a>
-              </div> */}
-            </section>
-
-            {/* Projects Section */}
-            <section id="projects" className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24">
-              <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:sr-only lg:relative lg:top-auto lg:mx-auto lg:w-full lg:px-0 lg:py-0 lg:opacity-0">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-200 lg:sr-only">Projects</h2>
-              </div>
-              <div>
-                <ol className="group/list">
-                  {projects.map((project, index) => (
-                    <li key={index} className="mb-12">
-                      <div className="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
-                        <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-slate-800/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg"></div>
-                        
-                        {/* Project Image */}
-                        <div className="z-10 sm:col-span-2">
-                          <img 
-                            src={project.image} 
-                            alt={project.title}
-                            className="rounded border-2 border-slate-200/10 transition group-hover:border-slate-200/30"
-                          />
-                        </div>
-
-                        <div className="z-10 sm:col-span-6">
-                          <h3 className="font-medium leading-snug text-slate-200">
-                            <a href={project.link} className="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-teal-300 focus-visible:text-teal-300 group/link text-base">
-                              <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
-                              <span>{project.title}</span>
-                              <svg 
-                                className="ml-1 h-4 w-4 shrink-0 transition-transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                              >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7V17" />
-                              </svg>
-                            </a>
-                          </h3>
-                          <p className="mt-2 text-sm leading-normal">{project.description}</p>
-                          {/* {project.stats && (
-                            <p className="mt-2 text-sm font-medium text-slate-400">{project.stats}</p>
-                          )} */}
-                          <ul className="mt-2 flex flex-wrap">
-                            {project.tags.map((tag, tagIndex) => (
-                              <li key={tagIndex} className="mr-1.5 mt-2">
-                                <div className="flex items-center rounded-full bg-teal-400/10 px-3 py-1 text-xs font-medium leading-5 text-teal-300">
-                                  {tag}
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
               </div>
             </section>
 
-            {/* Footer */}
-            <footer className="max-w-md pb-16 text-sm text-slate-500 sm:pb-0">
-              {/* <p>
-                Coded in <a href="#" className="font-medium text-slate-400 hover:text-teal-300">Visual Studio Code</a>. Built with <a href="#" className="font-medium text-slate-400 hover:text-teal-300">Next.js</a> and <a href="#" className="font-medium text-slate-400 hover:text-teal-300">Tailwind CSS</a>, deployed with <a href="#" className="font-medium text-slate-400 hover:text-teal-300">Vercel</a>.
-              </p> */}
+            <footer className="pb-16 text-sm text-subtle sm:pb-0">
+              © {new Date().getFullYear()} Malith Jayasinghe. Built with Next.js and Tailwind CSS.
             </footer>
           </main>
         </div>
