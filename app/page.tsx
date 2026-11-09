@@ -2,106 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 
-type Project = {
-  title: string;
-  description: string;
-  tags: string[];
-  link?: string;
-  badge?: "Live" | "GitHub";
-  image: string;
-};
+import { experiences, featuredProjects, otherProjects, type Project } from "@/lib/profile";
+import AskAI, { OPEN_ASK_AI_EVENT } from "@/components/AskAI";
 
 const SECTIONS = ['about', 'experience', 'projects', 'contact'] as const;
-
-const experiences = [
-  {
-    period: "2026 Jun — Present",
-    title: "Junior AI Automation Engineer",
-    company: "Aahaas",
-    description: "Built Travel Quote GPT, an AI-powered travel quotation and itinerary generator that automates quote preparation. Develop and integrate backend APIs across multiple systems with data synchronization, validation and prompt-injection safeguards, and optimize database queries and LLM token usage to cut AI processing costs.",
-    tags: ["n8n", "JavaScript", "OpenAI", "Gemini", "REST APIs", "LLM Automation"]
-  },
-  {
-    period: "2025 May — 2026 May",
-    title: "Intern Software Engineer",
-    company: "One Billion Tech",
-    description: "Built Spring Boot microservices and React interfaces for Million Spaces, a workspace booking platform: added server-side caching, improved Google Calendar sync, helped migrate services to AWS serverless, and co-developed Spacey, an AI chatbot for users. Also built full-stack features for 1HR, a cloud-native HR system, working on multi-cloud infrastructure with Terraform.",
-    tags: ["Spring Boot", "Microservices", "Node.js", "React", "MongoDB", "PostgreSQL", "AWS", "Azure", "Terraform", "Serverless"]
-  },
-  {
-    period: "2024 Feb — 2024 Oct",
-    title: "Intern Software Engineer",
-    company: "Softmint Software Solutions",
-    description: "Optimized SQL queries and improved database performance. Built scalable, secure backend services with Laravel, focusing on database management and API integration.",
-    tags: ["Laravel", "React", "MySQL", "WordPress", "Node.js", "DigitalOcean"]
-  }
-];
-
-const featuredProjects: Project[] = [
-  {
-    title: "AI Agent System for E-commerce",
-    description: "A multi-agent AI platform for e-commerce with customer support, shopping assistance and dynamic agent routing. Includes an MCP server giving external AI assistants secure, customer-scoped catalogue access, RAG product search on cloud or local models, prompt-injection protection with human handover, and a practice mode where shop owners grade AI replies before going live.",
-    tags: ["Python", "LangGraph", "FastAPI", "MCP", "PostgreSQL", "pgvector", "Redis", "Gemini", "Ollama", "Next.js"],
-    link: "https://github.com/malithJayasinghe2000/neura-agents-system",
-    badge: "GitHub",
-    image: "https://opengraph.githubassets.com/1/malithJayasinghe2000/neura-agents-system"
-  },
-  {
-    title: "TheLawyr - Sri Lankan Legal Information Platform",
-    description: "A platform that helps people explore and understand Sri Lankan legislation. Its AI legal assistant retrieves the relevant law and answers with source references. Also includes a legal library, law firm directory, blog and legal forms.",
-    tags: ["Next.js", "Python", "RAG", "LangChain", "Gemini"],
-    link: "https://thelawyr.fiveneurals.com",
-    badge: "Live",
-    image: "/images/thelawyr.png"
-  },
-  {
-    title: "JobCeylon - AI Powered Job Platform",
-    description: "A live job platform that aggregates Sri Lankan job listings, matches them to users and sends Telegram and email alerts. Implemented subscription tier limits and pricing logic, fixed the PayPal payment flow, and improved UX with job filters, a simpler application flow and mobile-responsive layouts.",
-    tags: ["Next.js", "TypeScript", "Supabase", "GitHub Actions", "Vercel"],
-    link: "https://jobceylon.com/",
-    badge: "Live",
-    image: "/images/jobceylon.png"
-  }
-];
-
-const otherProjects: Project[] = [
-  {
-    title: "Millionspaces - Coworking Space Booking",
-    description: "Contributed to a platform for booking coworking spaces in Sri Lanka, with real-time availability and secure payments. Implemented server-side caching, improved Google Calendar booking sync, and co-developed Spacey, an AI chatbot that assists users.",
-    tags: ["React", "Spring Boot", "MongoDB", "AWS"],
-    link: "https://millionspaces.com/Sri-Lanka",
-    badge: "Live",
-    image: "/images/millionspaces.png"
-  },
-  {
-    title: "SustainPro - Event Management Platform",
-    description: "Contributed to an enterprise system for managing organizations, events and nested services. Built a real-time monitoring engine on AWS IoT Core that detects device anomalies and notifies technicians automatically, and implemented role-based access control (RBAC) for multi-level user permissions. Designed the end-to-end event lifecycle and an automated pipeline for IoT device onboarding and telemetry visualization.",
-    tags: ["IoT", "Next.js", "PostgreSQL", "AWS", "RabbitMQ", "Docker"],
-    link: "https://github.com/malithJayasinghe2000/sustainpro",
-    badge: "GitHub",
-    image: "https://opengraph.githubassets.com/1/malithJayasinghe2000/sustainpro"
-  },
-  {
-    title: "Blockchain-based E-voting System",
-    description: "Final-year research on secure voting and data integrity, using homomorphic encryption for encrypted vote tabulation and blockchain to verify vote integrity.",
-    tags: ["Next.js", "Ethereum", "Solidity", "Homomorphic Encryption"],
-    link: "https://github.com/malithJayasinghe2000/E-voting-research-project",
-    badge: "GitHub",
-    image: "https://opengraph.githubassets.com/1/malithJayasinghe2000/E-voting-research-project"
-  },
-  {
-    title: "Stores Management System",
-    description: "Collaborated on a system for the Survey Department of Sri Lanka to manage procurement, tenders, employees and equipment across the country, centralizing data and improving transparency.",
-    tags: ["Laravel", "Filament", "MySQL", "Bootstrap"],
-    image: "/images/stores.jpg"
-  },
-  {
-    title: "Tour Management System",
-    description: "Contributed to a centralized admin panel for managing hotel, activity and tour bookings, integrated with an existing WordPress database so booking records stay in sync.",
-    tags: ["WordPress", "Laravel", "JavaScript", "MySQL", "DigitalOcean"],
-    image: "/images/tour.jpg"
-  }
-];
 
 function ArrowIcon({ className = "" }: { className?: string }) {
   return (
@@ -231,6 +135,18 @@ export default function Portfolio() {
                 <span className="h-1.5 w-1.5 rounded-full bg-accent"></span>
                 Currently: AI Automation Engineer @ Aahaas
               </p> */}
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new Event(OPEN_ASK_AI_EVENT))}
+                className="group/link mt-8 flex items-center gap-2 rounded-lg border border-line px-4 py-2.5 text-sm text-muted transition hover:border-accent/50 hover:text-fg"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none"></span>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+                </span>
+                Don&apos;t want to read? <span className="font-semibold text-fg group-hover/link:text-accent">Ask my AI about me</span>
+                <span aria-hidden="true" className="transition-transform group-hover/link:translate-x-0.5">→</span>
+              </button>
 
               <nav className="hidden lg:block mt-16" aria-label="In-page navigation">
                 <ul className="w-max space-y-1">
@@ -364,6 +280,7 @@ export default function Portfolio() {
           </main>
         </div>
       </div>
+      <AskAI />
     </div>
   );
 }
