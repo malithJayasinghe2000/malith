@@ -41,7 +41,7 @@ function Steps({ active }: { active: number }) {
               ) : current ? (
                 <span className="h-3 w-3 animate-spin rounded-full border-2 border-accent/30 border-t-accent motion-reduce:animate-none"></span>
               ) : (
-                <span className="h-1.5 w-1.5 rounded-full bg-subtle"></span>
+                <span className="h-1.5 w-1.5 bg-subtle"></span>
               )}
             </span>
             <span className={current ? "text-fg" : "text-muted"}>{step}{current && "…"}</span>
@@ -143,7 +143,7 @@ export default function AskAI() {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-controls="ask-ai-panel"
-        className={`cursor-pointer fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-3 text-sm font-semibold text-ink shadow-lg shadow-accent/20 transition hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${open ? "max-sm:hidden" : ""}`}
+        className={`cursor-pointer fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-semibold text-ink shadow-lg shadow-accent/20 transition hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${open ? "max-sm:hidden" : ""}`}
       >
         {open ? (
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true" cursor="pointer"><path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" /></svg>
@@ -157,16 +157,15 @@ export default function AskAI() {
         role="dialog"
         aria-label="Ask Malith's AI assistant"
         className={`fixed z-50 flex flex-col overflow-hidden border border-line bg-ink shadow-2xl shadow-black/60 transition-all duration-200
-          inset-x-0 bottom-0 h-[85dvh] rounded-t-2xl
-          sm:inset-x-auto sm:bottom-20 sm:right-5 sm:h-[560px] sm:max-h-[calc(100dvh-7rem)] sm:w-[400px] sm:rounded-2xl
+          inset-x-0 bottom-0 h-[85dvh] rounded-t-lg
+          sm:inset-x-auto sm:bottom-20 sm:right-5 sm:h-[560px] sm:max-h-[calc(100dvh-7rem)] sm:w-[400px] sm:rounded-lg
           ${open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"}`}
       >
         <header className="flex items-center justify-between border-b border-line px-5 py-4">
           <div>
             <p className="flex items-center gap-2 text-sm font-semibold text-fg">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+                <span className="status-blink relative inline-flex h-2 w-2 bg-accent"></span>
               </span>
               Malith&apos;s AI assistant
             </p>
@@ -188,7 +187,7 @@ export default function AskAI() {
                     key={s}
                     type="button"
                     onClick={() => ask(s)}
-                    className="rounded-full border border-line px-3 py-1.5 text-left text-xs text-muted transition hover:border-accent/50 hover:text-fg"
+                    className="rounded-md border border-line px-3 py-1.5 text-left text-xs text-muted transition hover:border-accent/50 hover:text-fg"
                   >
                     {s}
                   </button>
@@ -200,7 +199,7 @@ export default function AskAI() {
           {messages.map((m, i) => (
             m.role === "user" ? (
               <div key={i} className="flex justify-end">
-                <p className="max-w-[85%] rounded-2xl rounded-br-sm bg-surface px-4 py-2.5 text-fg">{m.content}</p>
+                <p className="max-w-[85%] rounded-md bg-surface px-4 py-2.5 text-fg">{m.content}</p>
               </div>
             ) : (
               <div key={i} className={`max-w-[95%] ${m.error ? "text-muted" : "text-fg/90"}`}>
@@ -208,7 +207,7 @@ export default function AskAI() {
                   <div className="flex flex-wrap items-center gap-3 text-xs">
                     <p>⚠ {m.content}</p>
                     {m.retry && i === messages.length - 1 && !loading && (
-                      <button type="button" onClick={() => ask(m.retry!, true)} className="rounded-full border border-accent/40 px-3 py-1 font-medium text-accent hover:bg-accent/10">
+                      <button type="button" onClick={() => ask(m.retry!, true)} className="rounded-md border border-accent/40 px-3 py-1 font-medium text-accent hover:bg-accent/10">
                         Try again
                       </button>
                     )}
@@ -235,7 +234,7 @@ export default function AskAI() {
           onSubmit={(e) => { e.preventDefault(); ask(input); }}
           className="border-t border-line p-3"
         >
-          <div className="flex items-end gap-2 rounded-xl border border-line bg-surface px-3 py-2 focus-within:border-accent/60">
+          <div className="flex items-end gap-2 rounded-md border border-line bg-surface px-3 py-2 focus-within:border-accent/60">
             <textarea
               ref={inputRef}
               value={input}

@@ -19,7 +19,7 @@ function Tags({ tags }: { tags: string[] }) {
   return (
     <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Technologies used">
       {tags.map((tag) => (
-        <li key={tag} className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium leading-5 text-accent">
+        <li key={tag} className="rounded bg-accent/10 px-3 py-1 text-xs font-medium leading-5 text-accent">
           {tag}
         </li>
       ))}
@@ -64,7 +64,7 @@ function ProjectCard({ project }: { project: Project }) {
             <span className={`mt-2 inline-flex items-center gap-1.5 rounded border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
               project.badge === "Live" ? "border-accent/40 text-accent" : "border-line text-muted"
             }`}>
-              {project.badge === "Live" && <span className="h-1.5 w-1.5 rounded-full bg-accent"></span>}
+              {project.badge === "Live" && <span className="h-1.5 w-1.5 bg-accent"></span>}
               {project.badge}
             </span>
           )}
@@ -131,18 +131,17 @@ export default function Portfolio() {
               <p className="mt-4 max-w-xs leading-normal">
                 I build reliable backends and AI-powered systems that solve real problems.
               </p>
-              {/* <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-xs text-muted">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent"></span>
+              {/* <p className="mt-6 inline-flex items-center gap-2 rounded-md border border-line px-3 py-1 text-xs text-muted">
+                <span className="h-1.5 w-1.5 bg-accent"></span>
                 Currently: AI Automation Engineer @ Aahaas
               </p> */}
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new Event(OPEN_ASK_AI_EVENT))}
-                className="group/link mt-8 flex items-center gap-2 rounded-lg border border-line px-4 py-2.5 text-sm text-muted transition hover:border-accent/50 hover:text-fg"
+                className="cursor-pointer group/link mt-8 flex items-center gap-2 rounded-lg border border-line px-4 py-2.5 text-sm text-muted transition hover:border-accent/50 hover:text-fg"
               >
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none"></span>
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+                  <span className="status-blink relative inline-flex h-2 w-2 bg-accent"></span>
                 </span>
                 Don&apos;t want to read? <span className="font-semibold text-fg group-hover/link:text-accent">Ask my AI about me</span>
                 <span aria-hidden="true" className="transition-transform group-hover/link:translate-x-0.5">→</span>

@@ -24,3 +24,16 @@ body {
   background: rgb(245 126 34 / 0.3);
   color: var(--color-fg);
 }
+
+@keyframes status-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.status-blink {
+  animation: status-blink 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-blink { animation: none; }
+}
